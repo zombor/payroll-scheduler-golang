@@ -3,7 +3,7 @@ package main
 import "time"
 import "errors"
 
-func NextPayDate(start_date time.Time, num_weeks int32) (time.Time, error) {
+func NextWeeklyPayDate(start_date time.Time, num_weeks int32) (time.Time, error) {
   original_year := start_date.Year()
 
   date := start_date.Add(time.Duration(num_weeks*24*7)*time.Hour)
