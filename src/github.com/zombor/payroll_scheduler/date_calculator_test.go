@@ -1,4 +1,4 @@
-package main
+package payroll_scheduler
 
 import "testing"
 import "time"
