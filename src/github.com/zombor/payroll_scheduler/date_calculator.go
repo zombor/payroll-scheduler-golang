@@ -19,6 +19,23 @@ func NextWeeklyPayDate(start_date time.Time, num_weeks int32) (time.Time, error)
   return date, nil
 }
 
-func Weekend(weekday time.Weekday) bool {
-  return (weekday == 0 || weekday == 6)
+func NextMonthlyPayDate(start_date time.Time) (time.Time, error) {
+  month := start_date.Month()
+  next_month := month+1
+
+  if (next_month > 12) {
+    return start_date, errors.New("Cannot iterate past current year")
+  }
+
+  next_date := time.Date(start_date.Year(), next_month, start_date.Day(), 0, 0, 0, 0, time.UTC)
+
+  for (next_date.Month() != next_month) {
+    next_date = next_date.Add(-time.Duration(24*time.Hour))
+  }
+
+  for (Weekend(next_date.Weekday()) == true) {
+    next_date = next_date.Add(-time.Duration(24*time.Hour))
+  }
+
+  return next_date, nil
 }

@@ -37,3 +37,38 @@ func TestErrorWhenRollsToNextYear(t *testing.T) {
     t.Errorf("NextWeeklyPayDate(%v) = %v, want not %v", in, err, nil)
   }
 }
+
+func TestNextMonthlyPayDate(t *testing.T) {
+  in := time.Date(2014, time.February, 13, 0, 0, 0, 0, time.UTC)
+  out := time.Date(2014, time.March, 13, 0, 0, 0, 0, time.UTC)
+
+  if x, _ := NextMonthlyPayDate(in); x != out {
+    t.Errorf("NextMonthlyPayDate(%v) = %v, want %v", in, x, out)
+  }
+}
+
+func TestNextMonthlyPayDateForMissingDay(t *testing.T) {
+  in := time.Date(2014, time.January, 30, 0, 0, 0, 0, time.UTC)
+  out := time.Date(2014, time.February, 28, 0, 0, 0, 0, time.UTC)
+
+  if x, _ := NextMonthlyPayDate(in); x != out {
+    t.Errorf("NextMonthlyPayDate(%v) = %v, want %v", in, x, out)
+  }
+}
+
+func TestNextMonthlyPayDateForMissingDayAndWeekend(t *testing.T) {
+  in := time.Date(2014, time.July, 31, 0, 0, 0, 0, time.UTC)
+  out := time.Date(2014, time.August, 29, 0, 0, 0, 0, time.UTC)
+
+  if x, _ := NextMonthlyPayDate(in); x != out {
+    t.Errorf("NextMonthlyPayDate(%v) = %v, want %v", in, x, out)
+  }
+}
+
+func TestErrorWhenMonthlyRollsToNextYear(t *testing.T) {
+  in := time.Date(2014, time.December, 26, 0, 0, 0, 0, time.UTC)
+
+  if _, err := NextMonthlyPayDate(in); err == nil {
+    t.Errorf("NextWeeklyPayDate(%v) = %v, want not %v", in, err, nil)
+  }
+}
